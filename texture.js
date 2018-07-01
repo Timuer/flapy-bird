@@ -20,21 +20,6 @@ class AbstractTexture {
     }
 }
 
-class Enemy extends AbstractTexture {
-    constructor(game, image) {
-        super(game, image)
-        this.x = rangeBetween(0, game.canvas.width - this.width)
-        this.speed = config.enemy_speed
-        this.direction = (Math.random() * 2 - 1) > 0 ? 1 : -1
-    }
-
-    update() {
-        this.speed = config.enemy_speed
-        this.y += this.speed
-        this.x += this.speed * this.direction
-    }
-}
-
 class Player extends AbstractTexture {
     constructor(game, image) {
         super(game, image)

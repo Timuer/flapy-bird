@@ -47,6 +47,10 @@ class Game {
         this.context.drawImage(image.img, image.x, image.y)
     }
 
+    drawSlicingImage(image, sx, sy, sWidth, sHeight) {
+        this.context.drawImage(image.img, sx, sy, sWidth, sHeight, image.x, image.y)
+    }
+
     drawFlipImage(image) {
         var ctx = this.context
         var cvs = this.canvas
@@ -125,25 +129,9 @@ class Game {
 
 var __main = function() {
     imgPaths = {
-        idle0: "img/idle/0.png",
-        idle1: "img/idle/1.png",
-        idle2: "img/idle/2.png",
-        idle3: "img/idle/3.png",
-        run0: "img/run/0.png",
-        run1: "img/run/1.png",
-        run2: "img/run/2.png",
-        run3: "img/run/3.png",
-        run4: "img/run/4.png",
-        run5: "img/run/5.png",
-        run6: "img/run/6.png",
-        run7: "img/run/7.png",
-        attack0: "img/attack/0.png",
-        attack1: "img/attack/1.png",
-        attack2: "img/attack/2.png",
-        attack3: "img/attack/3.png",
-        attack4: "img/attack/4.png",
-        attack5: "img/attack/5.png",
-        attack6: "img/attack/6.png",
+        bird0: "img/bird0.png"
+        bird1: "img/bird1.png"
+        bird2: "img/bird2.png"
         bg: "img/bg.jpg",
     }
     onDebugMode(true)
