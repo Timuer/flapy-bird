@@ -43,6 +43,6 @@ class Animation {
         var frame = this.animations[this.currentAnimation][this.frameIndex]
         frame.x = this.x
         frame.y = this.y
-        this.game.drawTransformImage(frame, this.rotation, this.flipX)
+        this.game.drawTransformImage(frame, this.rotation, this.flipX, false)
     }
 }

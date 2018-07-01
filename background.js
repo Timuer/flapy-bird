@@ -1,7 +1,27 @@
 class Background {
-    constructor(game, images) {
+    constructor(game, image) {
         this.game = game
-        this.images = images
+        this.image = image
+    }
+
+    update() {
+
+    }
+
+    draw() {
+        this.game.drawImage(this.image)
+    }
+}
+
+class Sky extends Background {
+    constructor(game, image) {
+        super(game, image)
+    }
+}
+
+class Land extends Background {
+    constructor(game, image) {
+        super(game, image)
         this.firstLandX = 0
     }
 
@@ -14,17 +34,8 @@ class Background {
     }
 
     draw() {
-        var sky = this.images["sky"]
-        this.game.drawImage(sky)
-        var pipeUp = this.images["pipeUp"]
-        pipeUp.x = 500
-        pipeUp.y = -200
-        this.game.drawImage(pipeUp)
-        var pipeDown = this.images["pipeDown"]
-        pipeDown.x = 600
-        pipeDown.y = 300
-        this.game.drawImage(pipeDown)
-        var land = this.images["land"]
+        // 循环绘制地面，制作位移效果
+        var land = this.image
         var landX = this.firstLandX
         for (var i = 0; i < 4; i++) {
             land.x = landX

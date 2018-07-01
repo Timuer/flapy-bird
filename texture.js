@@ -49,11 +49,15 @@ class Player extends AbstractTexture {
         })
         p.game.registerAction("f", function(keyStatus) {
             if (keyStatus == "down") {
-                p.rotation = -45
-                p.y -= 150
-                p.speedY = 0
+                p.jump()
             }
         })
+    }
+
+    jump() {
+        this.rotation = -45
+        this.y -= 100
+        this.speedY = 0
     }
 
     update() {
@@ -61,13 +65,12 @@ class Player extends AbstractTexture {
         if (this.rotation < 45) {
             this.rotation += 5
         }
-        if (this.y >= 460) {
-            this.y = 460
+        if (this.y >= 470) {
+            this.y = 470
         } else {
             this.y += this.speedY
             this.speedY += this.gravity
         }
-        this.x += 2
         // 将与绘制动画相关的参数同步到animation中
         this.animation.x = this.x
         this.animation.y = this.y
@@ -82,6 +85,53 @@ class Player extends AbstractTexture {
     move(dist, keyStatus) {
         if (keyStatus == "down") {
             this.x += dist
+        }
+    }
+}
+
+class Pipes extends AbstractTexture {
+    constructor(game, image) {
+        super(game, image)
+        this.numPipes = 5
+        this.pipesX = []
+        this.pipesH = []
+        this.pipeHeight = 420
+        this.pipeWidth = 60
+        this.pipeVerticleSpace = 200
+        this.pipeHorizontalSpace = 300
+        this.init()
+    }
+
+    init() {
+        var x = this.game.canvas.width
+        for (var i = 0; i < this.numPipes; i++) {
+            this.pipesX.push(x)
+            this.pipesH.push(rangeBetween(-400, -200))
+            x += this.pipeHorizontalSpace
+        }
+    }
+
+    update() {
+        for (var i = 0; i < this.numPipes; i++) {
+            this.pipesX[i] -= 5
+        }
+        if (this.pipesX[0] < -this.pipeWidth) {
+            var newX = this.pipesX[this.numPipes - 1] + this.pipeHorizontalSpace
+            this.pipesX.push(newX)
+            this.pipesX.shift()
+            this.pipesH.push(rangeBetween(-400, -200))
+            this.pipesH.shift()
+        }
+    }
+
+    draw() {
+        var pipe = this.image
+        for (var i = 0; i < this.numPipes; i++) {
+            pipe.x = this.pipesX[i]
+            pipe.y = this.pipesH[i]
+            this.game.drawImage(pipe)
+            pipe.y = this.pipesH[i] + this.pipeHeight + this.pipeVerticleSpace
+            this.game.drawTransformImage(pipe, 0, false, true)
         }
     }
 }
