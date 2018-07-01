@@ -42,12 +42,16 @@ class GameScene extends Scene {
     }
 
     init() {
-        this.addElement(new Player(this.game, this.game.imageByName("idle0")))
-    }
-
-    draw() {
-        var bg = this.game.imageByName("bg")
-        this.game.drawImage(bg)
-        super.draw()
+        var g = this
+        var images = {
+            sky: g.game.imageByName("sky"),
+            land: g.game.imageByName("land"),
+            pipeUp: g.game.imageByName("pipeUp"),
+            pipeDown: g.game.imageByName("pipeDown"),
+        }
+        var bg = new Background(this.game, images)
+        g.addElement(bg)
+        var p = new Player(this.game, this.game.imageByName("bird0"))
+        g.addElement(p)
     }
 }

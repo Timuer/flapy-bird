@@ -23,9 +23,12 @@ class AbstractTexture {
 class Player extends AbstractTexture {
     constructor(game, image) {
         super(game, image)
-        this.x = game.canvas.width / 2 - image.width / 2
-        this.y = game.canvas.height - image.height
-        this.speed = config.player_speed
+        this.x = game.canvas.width / 5
+        this.y = game.canvas.height / 2
+        this.speedX = 5
+        this.speedY = 0
+        this.gravity = 0.3
+        this.rotation = 0
         this.animation = new Animation(game, this.x, this.y)
         this.setupActions()
     }
@@ -34,29 +37,41 @@ class Player extends AbstractTexture {
         var p = this
         p.game.registerAction("a", function(keyStatus) {
             if (keyStatus) {
-                p.animation.flipX = false
-                p.move(-p.speed, keyStatus)
+                p.animation.flipX = true
+                p.move(-p.speedX, keyStatus)
             }
         })
         p.game.registerAction("d", function(keyStatus) {
             if (keyStatus) {
-                p.animation.flipX = true
-                p.move(p.speed, keyStatus)
+                p.animation.flipX = false
+                p.move(p.speedX, keyStatus)
             }
         })
         p.game.registerAction("f", function(keyStatus) {
             if (keyStatus == "down") {
-                p.animation.nextAnimation = "attack"
-            } else if (keyStatus == "up") {
-                p.animation.nextAnimation = "idle"
+                p.rotation = -45
+                p.y -= 150
+                p.speedY = 0
             }
         })
     }
 
     update() {
-        this.speed = config.player_speed
+        // 调整玩家坐标和角度
+        if (this.rotation < 45) {
+            this.rotation += 5
+        }
+        if (this.y >= 460) {
+            this.y = 460
+        } else {
+            this.y += this.speedY
+            this.speedY += this.gravity
+        }
+        this.x += 2
+        // 将与绘制动画相关的参数同步到animation中
         this.animation.x = this.x
         this.animation.y = this.y
+        this.animation.rotation = this.rotation
         this.animation.update()
     }
 
@@ -65,10 +80,7 @@ class Player extends AbstractTexture {
     }
 
     move(dist, keyStatus) {
-        if (keyStatus == "up") {
-            this.animation.nextAnimation = "idle"
-        } else if (keyStatus == "down"){
-            this.animation.nextAnimation = "run"
+        if (keyStatus == "down") {
             this.x += dist
         }
     }

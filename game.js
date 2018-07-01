@@ -47,17 +47,17 @@ class Game {
         this.context.drawImage(image.img, image.x, image.y)
     }
 
-    drawSlicingImage(image, sx, sy, sWidth, sHeight) {
-        this.context.drawImage(image.img, sx, sy, sWidth, sHeight, image.x, image.y)
-    }
-
-    drawFlipImage(image) {
+    drawTransformImage(image, rotation, flipX) {
         var ctx = this.context
         var cvs = this.canvas
         ctx.save()
-        ctx.translate(cvs.width, 0)
-        ctx.scale(-1, 1)
-        ctx.drawImage(image.img, cvs.width - image.x - image.width, image.y)
+        ctx.translate(image.x + image.width / 2, image.y + image.height / 2)
+        if (flipX) {
+            ctx.scale(-1, 1)
+        }
+        ctx.rotate(rotation * Math.PI / 180)
+        ctx.translate(-image.width / 2, -image.height / 2)
+        ctx.drawImage(image.img, 0, 0)
         ctx.restore()
     }
 
@@ -129,10 +129,13 @@ class Game {
 
 var __main = function() {
     imgPaths = {
-        bird0: "img/bird0.png"
-        bird1: "img/bird1.png"
-        bird2: "img/bird2.png"
-        bg: "img/bg.jpg",
+        bird0: "img/bird0.png",
+        bird1: "img/bird1.png",
+        bird2: "img/bird2.png",
+        pipeUp: "img/pipeUp.png",
+        pipeDown: "img/pipeDown.png",
+        sky: "img/sky.png",
+        land: "img/land.png",
     }
     onDebugMode(true)
     var game = new Game(imgPaths)
