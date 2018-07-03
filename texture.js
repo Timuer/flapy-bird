@@ -7,6 +7,7 @@ class AbstractTexture {
         this.game = game
         this.image = image
         this.exists = true
+        this.onDebug = true
     }
 
     draw() {
@@ -16,7 +17,9 @@ class AbstractTexture {
     }
 
     update() {
-
+        if (this.onDebug && this.debug) {
+            this.debug()
+        }
     }
 }
 
@@ -27,6 +30,7 @@ class Player extends AbstractTexture {
         this.y = game.canvas.height / 2
         this.speedX = 5
         this.speedY = 0
+        this.jumpHeight = 20
         this.gravity = 0.3
         this.rotation = 0
         this.animation = new Animation(game, this.x, this.y)
@@ -36,13 +40,13 @@ class Player extends AbstractTexture {
     setupActions() {
         var p = this
         p.game.registerAction("a", function(keyStatus) {
-            if (keyStatus) {
+            if (keyStatus == "down") {
                 p.animation.flipX = true
                 p.move(-p.speedX, keyStatus)
             }
         })
         p.game.registerAction("d", function(keyStatus) {
-            if (keyStatus) {
+            if (keyStatus == "down") {
                 p.animation.flipX = false
                 p.move(p.speedX, keyStatus)
             }
@@ -56,11 +60,12 @@ class Player extends AbstractTexture {
 
     jump() {
         this.rotation = -45
-        this.y -= 100
+        this.y -= this.jumpHeight
         this.speedY = 0
     }
 
     update() {
+        super.update()
         // 调整玩家坐标和角度
         if (this.rotation < 45) {
             this.rotation += 5
@@ -87,6 +92,10 @@ class Player extends AbstractTexture {
             this.x += dist
         }
     }
+
+    debug() {
+        this.jumpHeight = config.player_jump_height.value
+    }
 }
 
 class Pipes extends AbstractTexture {
@@ -112,6 +121,7 @@ class Pipes extends AbstractTexture {
     }
 
     update() {
+        super.update()
         for (var i = 0; i < this.numPipes; i++) {
             this.pipesX[i] -= 5
         }
@@ -133,5 +143,10 @@ class Pipes extends AbstractTexture {
             pipe.y = this.pipesH[i] + this.pipeHeight + this.pipeVerticleSpace
             this.game.drawTransformImage(pipe, 0, false, true)
         }
+    }
+
+    debug() {
+        this.pipeVerticleSpace = config.pipe_verticle_space.value
+        this.pipeHorizontalSpace = config.pipe_horizontal_space.value
     }
 }

@@ -30,6 +30,7 @@ class Game {
     }
 
     performActions() {
+        log(this.keydowns)
         var keys = Object.keys(this.actions)
         for (var i = 0; i < keys.length; i++) {
             var k = keys[i]
@@ -37,10 +38,10 @@ class Game {
             if (keyStatus) {
                 this.actions[k](keyStatus)
             }
-            // 每次调用事件之后需要清空按键状态，否则按键状态可能一直保持
+            // 每次调用事件之后需要考虑十否清空按键状态，否则按键状态可能一直保持
             // 比如keyup事件我们的本意是一次按键回弹的事件，但是如果不清空，那么只要
-            // 按键处于未被按状态，该事件就会被触发
-            this.keydowns[k] = null
+            // 之后按键处于未被按状态，该事件就会一直被触发
+            // this.keydowns[k] = null
         }
     }
 
